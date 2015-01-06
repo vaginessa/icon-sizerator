@@ -1,1 +1,27 @@
 /* CSS declarations go here */
+body {
+  background: #54EEEF;
+}
+h1 {
+  border: 5px solid #FFFFFF;
+  border-radius: 8px;
+  font-family: Roboto-Bold;
+  font-size: 64px;
+  color: #FFFFFF;
+  line-height: 84px;
+}
+h2 {
+  font-family: AvenirNext-Regular;
+  font-size: 20px;
+  color: #FFFFFF;
+  line-height: 20px;
+}
+#dropzone {
+  /* Rectangle 7: */
+  background: #54EEEF;
+  border: 5px solid #FFFFFF;
+  border-radius: 8px;
+  /* Shape: */
+  background: #FFFFFF;
+  border: 1px solid #FFFEFE;
+}
