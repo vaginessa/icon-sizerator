@@ -12,13 +12,13 @@ h1 {
   border: 5px solid #FFFFFF;
   border-radius: 8px;
   font-family: Roboto-Bold;
-  font-size: 64px;
+  font-size: 6vw;
   color: #FFFFFF;
   line-height: 84px;
 }
 h2 {
   font-family: AvenirNext-Regular;
-  font-size: 20px;
+  font-size: 2vw;
   color: #FFFFFF;
   line-height: 20px;
 }
@@ -32,16 +32,19 @@ div {
 }
 #dropzone {
   float: left;
-  height: 200px;
-  width: 200px;
+  position: relative;
+  height: 0;
+  width: 45%;
+  padding-bottom: 45%;
   border: 5px solid #FFFFFF;
   border-radius: 8px;
-  /* Shape: */
 }
 #inputzone {
   float: right;
-  height: 200px;
-  width: 200px;
+  position: relative;
+  height: 0;
+  width: 45%;
+  padding-bottom: 45%;
   border: 5px solid #FFFFFF;
   border-radius: 8px;
 }
