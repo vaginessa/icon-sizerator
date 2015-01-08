@@ -3,25 +3,41 @@
 </head>
 
 <body>
-  <div class="center">
-    <h1><div class="center">Icon Sizerator</div></h1>
-    <h2><div class="center">Icon Sizing and Building, Simplified</div></h2>
-  </div>
-
   <div id="boxen">
+    <h1>
+      <div class="center">Icon Sizerator</div>
+    </h1>
+    <h2>
+      <div class="center">Icon Sizing and Building, Simplified</div>
+    </h2>
     <div id="dropzone">
       <object data='/ei-image.svg' type="image/svg+xml">
         <img src='/ei-image.png' />
       </object>
     </div>
     <div id="inputzone">
-      <p>this box has rounded cornerS</p>
+      <div id="urlfield">
+        <p>
+          Enter URL with icon image:
+        </p>
+        <textarea name="imageurl" rows="1">
+          Enter URL here...
+        </textarea>
+      </div>
+      <div id="filepicker">
+        <p>
+          Select local icon file:
+        </p>
+        <input type="file" size="60" />
+      </div>
+    </div>
+    <div id="footer">
+      <p>
+        by David J Peacock
+        <a href="http://twitter.com/davidjpeacock">twitter</a>
+        <a href="http://github.com/davidjpeacock">GitHub</a>
+        <a href="mailto:david@davidjpeacock.ca">email</a>
+      </p>
     </div>
   </div>
-
 </body>
-
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
-</template>

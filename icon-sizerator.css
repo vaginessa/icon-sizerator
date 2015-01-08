@@ -1,31 +1,36 @@
 /* CSS declarations go here */
-.center {
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
-  background-color: #54eeef;
-}
+
 body {
   background: #54EEEF;
 }
 h1 {
   border: 5px solid #FFFFFF;
   border-radius: 8px;
-  font-family: Roboto-Bold;
+  font-family: Roboto;
   font-size: 6vw;
   color: #FFFFFF;
-  line-height: 84px;
+  text-align: center;
+  margin: 0;
 }
 h2 {
   font-family: AvenirNext-Regular;
-  font-size: 2vw;
+  font-size: 1.7vw;
   color: #FFFFFF;
-  line-height: 20px;
+  text-align: center;
+}
+p {
+  font-family: AvenirNext-Regular;
+  font-size: 1.7vw;
+  color: #FFFFFF;
 }
 div {
   display: block;
 }
+textarea {
+  width: 100%
+}
 #boxen {
+  padding-top: 5%;
   margin-left: auto;
   margin-right: auto;
   width: 70%;
@@ -47,4 +52,20 @@ div {
   padding-bottom: 45%;
   border: 5px solid #FFFFFF;
   border-radius: 8px;
+}
+#urlfield {
+  padding-top: 15%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+}
+#filepicker {
+  padding-bottom: 15%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+}
+#footer {
+  float: right;
+  bottom: 0;
 }
