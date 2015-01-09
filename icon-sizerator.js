@@ -1,3 +1,5 @@
+var inkscape = Meteor.npmRequire('inkscape');
+
 if (Meteor.isClient) {
 
 }
