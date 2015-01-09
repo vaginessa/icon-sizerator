@@ -1,5 +1,9 @@
 var inkscape = Meteor.npmRequire('inkscape');
 
+// inkscape -z -e ei-image.png -w 1024 -h 1024 ei-image.svg
+// https://www.npmjs.com/package/inkscape
+// https://inkscape.org/doc/inkscape-man.html
+
 if (Meteor.isClient) {
   var sourceImage = handed-from-html;
 
@@ -33,7 +37,7 @@ if (Meteor.isClient) {
     var suffix = sizes.config.suffix;
     var suffixRetina = sizes.config.suffixRetina;
 
-    // ImageMagick options for non-retina
+    // Inkscape options for non-retina
     var options = {
       srcPath: sourceImage,
       quality: 1,
@@ -41,7 +45,7 @@ if (Meteor.isClient) {
       width: value.size
     };
 
-    // ImageMagick options for retina
+    // Inkscape options for retina
     var optionsRetina = {
       srcPath: sourceImage,
       quality: 1,
@@ -49,17 +53,12 @@ if (Meteor.isClient) {
       width: (value.size)*2
     };
 
-
-    // Process non-retina icons
-    im.resize(options, function (err) {
+    inkscape.resize(options, function (err) {
       if (err) { throw err; }
-      log.info('Created icon ' + outDir + imageName + suffix);
     });
 
-    // Process retina icons
-    im.resize(optionsRetina, function (err) {
+    inkscape.resize(optionsRetina, function (err) {
       if (err) { throw err; }
-      log.info('Created icon ' + outDir + imageName + suffixRetina);
     });
   });
 
