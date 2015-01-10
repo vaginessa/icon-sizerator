@@ -1,11 +1,7 @@
-var inkscape = Meteor.npmRequire('inkscape');
-
-// inkscape -z -e ei-image.png -w 1024 -h 1024 ei-image.svg
-// https://www.npmjs.com/package/inkscape
-// https://inkscape.org/doc/inkscape-man.html
+var im = Meteor.npmRequire('imagemagick');
 
 if (Meteor.isClient) {
-  var sourceImage = handed-from-html;
+  var sourceImage = process.argv[2];
 
   var sizes = {
     "config": {
@@ -25,6 +21,7 @@ if (Meteor.isClient) {
     ]
   };
 
+
   sizes.data.map(function (value, index) {
     // Output directory
     var outDir = sizes.config.directory;
@@ -37,7 +34,7 @@ if (Meteor.isClient) {
     var suffix = sizes.config.suffix;
     var suffixRetina = sizes.config.suffixRetina;
 
-    // Inkscape options for non-retina
+    // ImageMagick options for non-retina
     var options = {
       srcPath: sourceImage,
       quality: 1,
@@ -45,7 +42,7 @@ if (Meteor.isClient) {
       width: value.size
     };
 
-    // Inkscape options for retina
+    // ImageMagick options for retina
     var optionsRetina = {
       srcPath: sourceImage,
       quality: 1,
@@ -53,15 +50,17 @@ if (Meteor.isClient) {
       width: (value.size)*2
     };
 
-    inkscape.resize(options, function (err) {
+
+    // Process non-retina icons
+    im.resize(options, function (err) {
       if (err) { throw err; }
     });
 
-    inkscape.resize(optionsRetina, function (err) {
+    // Process retina icons
+    im.resize(optionsRetina, function (err) {
       if (err) { throw err; }
     });
   });
-
 }
 
 if (Meteor.isServer) {
