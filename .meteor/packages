@@ -11,3 +11,8 @@ meteorhacks:npm
 
 
 npm-container
+cfs:standard-packages
+cfs:filesystem
+raix:ui-dropped-event
+dbarrett:dropzonejs
+cfs:gridfs
