@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "imagemagick": {
-      "version": "0.1.3"
-    }
-  }
-}
