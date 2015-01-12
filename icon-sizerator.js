@@ -1,7 +1,9 @@
 var http = require('http');
 var fs = require('fs');
 var im = require('imagemagick');
-var log = require('custom-logger').config({ level: 0 });
+var log = require('custom-logger').config({
+  level: 0
+});
 
 http.createServer(function(req, res) {
 
@@ -13,9 +15,9 @@ http.createServer(function(req, res) {
 
   req.on('data', function(d) {
     uploadedBytes += d.length;
-    var p = (uploadedBytes/fileSize) * 100;
-    res.write("Uploading " + parseInt(p)+ " %\n");
-    log.debug("Uploading " + parseInt(p)+ " %");
+    var p = (uploadedBytes / fileSize) * 100;
+    res.write("Uploading " + parseInt(p) + " %\n");
+    log.debug("Uploading " + parseInt(p) + " %");
   });
 
   req.on('end', function() {
@@ -46,12 +48,13 @@ http.createServer(function(req, res) {
     });
     res.end(fs.readFileSync('public/ei-image.png'));
     log.debug("Sent PNG.");
-  }/* else {
-    res.writeHead(404, {
-      'Content-Type': 'text/plain'
-    });
-    res.end("Page could not be found");
-  } */
+  }
+  /* else {
+      res.writeHead(404, {
+        'Content-Type': 'text/plain'
+      });
+      res.end("Page could not be found");
+    } */
 
 }).listen(3000, "127.0.0.1");
 log.info('Started HTTP Server on localhost port 3000.');
