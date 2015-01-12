@@ -34,14 +34,9 @@ http.createServer(function(req, res) {
     });
     res.end(fs.readFileSync('public/ei-image.png'));
     log.debug("Sent PNG.");
-  }
-  /* else {
-      res.writeHead(404, {
-        'Content-Type': 'text/plain'
-      });
-      res.end("Page could not be found");
-    } */
-
+  } else if (req.method == 'POST') {
+    log.debug("POST Received.");
+    
     var iconFile = fs.createWriteStream(randomName + ".png");
     req.pipe(iconFile);
 
@@ -58,6 +53,16 @@ http.createServer(function(req, res) {
     req.on('end', function() {
       res.end("File upload is complete.");
     });
+
+    // iim(iconFile, randomName);
+
+  } else {
+      res.writeHead(404, {
+        'Content-Type': 'text/plain'
+      });
+      res.end("404 - Page could not be found\n");
+  }
+
 
 }).listen(3000, "127.0.0.1");
 log.info('Started HTTP Server on localhost port 3000.');

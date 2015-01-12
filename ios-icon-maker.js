@@ -1,4 +1,4 @@
-var im = require('imagemagick');
+var im  = require('imagemagick');
 var log = require('custom-logger').config({ level: 1 });
 
 module.exports = function(sourceImage, randomName, callback) {
@@ -19,49 +19,48 @@ module.exports = function(sourceImage, randomName, callback) {
       { "size": 72 },
       { "size": 76 }
     ]
-};
-
-
-sizes.data.map(function (value, index) {
-  // Output directory
-  var outDir = sizes.config.directory;
-
-  // Image name changes if `customDefault` is defined
-  var imageName = sizes.config.prefix;
-  imageName += (typeof value.customDefault) !== 'undefined' ? value.customDefault : '-' + value.size;
-
-  // Image suffix and extension for retina and non-retina
-  var suffix = sizes.config.suffix;
-  var suffixRetina = sizes.config.suffixRetina;
-
-  // ImageMagick options for non-retina
-  var options = {
-    srcPath: sourceImage,
-    quality: 1,
-    dstPath: outDir + imageName + suffix,
-    width: value.size
   };
 
-  // ImageMagick options for retina
-  var optionsRetina = {
-    srcPath: sourceImage,
-    quality: 1,
-    dstPath: outDir + imageName + suffixRetina,
-    width: (value.size)*2
-  };
+  sizes.data.map(function (value, index) {
+    // Output directory
+    var outDir = sizes.config.directory;
+
+    // Image name changes if `customDefault` is defined
+    var imageName = sizes.config.prefix;
+    imageName += (typeof value.customDefault) !== 'undefined' ? value.customDefault : '-' + value.size;
+
+    // Image suffix and extension for retina and non-retina
+    var suffix = sizes.config.suffix;
+    var suffixRetina = sizes.config.suffixRetina;
+
+    // ImageMagick options for non-retina
+    var options = {
+      srcPath: sourceImage,
+      quality: 1,
+      dstPath: outDir + imageName + suffix,
+      width: value.size
+    };
+
+    // ImageMagick options for retina
+    var optionsRetina = {
+      srcPath: sourceImage,
+      quality: 1,
+      dstPath: outDir + imageName + suffixRetina,
+      width: (value.size)*2
+    };
 
 
-  // Process non-retina icons
-  im.resize(options, function (err) {
-    if (err) { throw err; }
-    log.info('Created icon ' + outDir + imageName + suffix);
+    // Process non-retina icons
+    im.resize(options, function (err) {
+      if (err) { throw err; }
+      log.info('Created icon ' + outDir + imageName + suffix);
+    });
+
+    // Process retina icons
+    im.resize(optionsRetina, function (err) {
+      if (err) { throw err; }
+      log.info('Created icon ' + outDir + imageName + suffixRetina);
+    });
   });
-
-  // Process retina icons
-  im.resize(optionsRetina, function (err) {
-    if (err) { throw err; }
-    log.info('Created icon ' + outDir + imageName + suffixRetina);
-  });
-});
 
 };
