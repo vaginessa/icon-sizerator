@@ -1,6 +1,0 @@
-{
-  "name": "icon sizerator",
-  "dependencies": {
-    "imagemagick": "^0.1.3"
-  }
-}
