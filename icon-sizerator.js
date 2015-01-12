@@ -1,28 +1,14 @@
 var http = require('http');
-var fs = require('fs');
-var im = require('imagemagick');
-var log = require('custom-logger').config({
+var fs   = require('fs');
+var rs   = require("randomstring");
+var iim  = require('./ios-icon-maker.js');
+var log  = require('custom-logger').config({
   level: 0
 });
 
 http.createServer(function(req, res) {
 
-  var iconFile = fs.createWriteStream("icon.png");
-  req.pipe(iconFile);
-
-  var fileSize = req.headers['content-length'];
-  var uploadedBytes = 0;
-
-  req.on('data', function(d) {
-    uploadedBytes += d.length;
-    var p = (uploadedBytes / fileSize) * 100;
-    res.write("Uploading " + parseInt(p) + " %\n");
-    log.debug("Uploading " + parseInt(p) + " %");
-  });
-
-  req.on('end', function() {
-    res.end("File upload is complete.");
-  });
+  var randomName = rs.generate();
 
   if (req.url == "/" || req.url == "/index.html") {
     res.writeHead(200, {
@@ -55,6 +41,23 @@ http.createServer(function(req, res) {
       });
       res.end("Page could not be found");
     } */
+
+    var iconFile = fs.createWriteStream(randomName + ".png");
+    req.pipe(iconFile);
+
+    var fileSize = req.headers['content-length'];
+    var uploadedBytes = 0;
+
+    req.on('data', function(d) {
+      uploadedBytes += d.length;
+      var p = (uploadedBytes / fileSize) * 100;
+      res.write("Uploading " + parseInt(p) + " %\n");
+      log.debug("Uploading " + parseInt(p) + " %");
+    });
+
+    req.on('end', function() {
+      res.end("File upload is complete.");
+    });
 
 }).listen(3000, "127.0.0.1");
 log.info('Started HTTP Server on localhost port 3000.');
