@@ -28,9 +28,12 @@
       </div>
       <div id="filepicker">
         <p>
-          Select local icon file:
+          Select local icon PNG:
         </p>
-        <input type="file" size="60" />
+        <form method="post" action="upload" enctype="multipart/form-data">
+          <input type="file" size="60" />
+          <input type="submit" value="Upload PNG" name="submit" />
+        </form>
       </div>
     </div>
     <div id="footer">

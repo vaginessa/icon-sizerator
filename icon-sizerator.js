@@ -8,8 +8,6 @@ var log  = require('custom-logger').config({
 
 http.createServer(function(req, res) {
 
-  var randomName = rs.generate();
-
   if (req.url == "/" || req.url == "/index.html") {
     res.writeHead(200, {
       'Content-Type': 'text/html'
@@ -36,7 +34,25 @@ http.createServer(function(req, res) {
     log.debug("Sent PNG.");
   } else if (req.method == 'POST') {
     log.debug("POST Received.");
-    
+
+    if (req.url === "/upload") {
+      var randomName = rs.generate();
+      var iconFile = randomName + ".png";
+      var transitData = '';
+
+      req.on('data', function(data) {
+        transitData += data;
+      });
+
+      req.on('end', function() {
+        fs.writeFile(iconFile, transitData, 'binary', function(err) {
+          if (err) throw err;
+        });
+        log.debug("File upload is complete.");
+      });
+
+    }
+    /*
     var iconFile = fs.createWriteStream(randomName + ".png");
     req.pipe(iconFile);
 
@@ -52,7 +68,7 @@ http.createServer(function(req, res) {
 
     req.on('end', function() {
       res.end("File upload is complete.");
-    });
+    }); */
 
     // iim(iconFile, randomName);
 
