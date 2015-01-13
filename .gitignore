@@ -1,8 +1,5 @@
 # Created by https://www.gitignore.io
 
-### Icon Sizerator ###
-*.png
-
 ### Node ###
 # Logs
 logs
@@ -54,4 +51,3 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-
