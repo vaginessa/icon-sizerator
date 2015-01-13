@@ -1,6 +1,7 @@
 var http = require('http');
 var fs   = require('fs');
-var rs   = require("randomstring");
+var rs   = require('randomstring');
+var fm   = require('formidable');
 var iim  = require('./ios-icon-maker.js');
 var log  = require('custom-logger').config({
   level: 0
