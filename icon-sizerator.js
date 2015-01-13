@@ -51,32 +51,16 @@ http.createServer(function(req, res) {
         log.debug("File upload is complete.");
       });
 
+      // iim(iconFile, randomName);
+
     }
-    /*
-    var iconFile = fs.createWriteStream(randomName + ".png");
-    req.pipe(iconFile);
-
-    var fileSize = req.headers['content-length'];
-    var uploadedBytes = 0;
-
-    req.on('data', function(d) {
-      uploadedBytes += d.length;
-      var p = (uploadedBytes / fileSize) * 100;
-      res.write("Uploading " + parseInt(p) + " %\n");
-      log.debug("Uploading " + parseInt(p) + " %");
-    });
-
-    req.on('end', function() {
-      res.end("File upload is complete.");
-    }); */
-
-    // iim(iconFile, randomName);
 
   } else {
-      res.writeHead(404, {
-        'Content-Type': 'text/plain'
-      });
-      res.end("404 - Page could not be found\n");
+    res.writeHead(200, {
+      'Content-Type': 'text/html'
+    });
+    res.end(fs.readFileSync('icon-sizerator.html'));
+    log.debug("Sent HTML in lieu of 404.");
   }
 
 
