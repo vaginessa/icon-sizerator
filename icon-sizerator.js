@@ -1,15 +1,47 @@
 var http = require('http');
-var fs   = require('fs');
-var rs   = require('randomstring');
-var fm   = require('formidable');
-var iim  = require('./ios-icon-maker.js');
-var log  = require('custom-logger').config({
+var fs = require('fs');
+var rs = require('randomstring');
+var fm = require('formidable');
+var util = require('util');
+var fse = require('fs-extra');
+var iim = require('./ios-icon-maker.js');
+var log = require('custom-logger').config({
   level: 0
 });
 
 http.createServer(function(req, res) {
 
-  if (req.url == "/" || req.url == "/index.html") {
+  if (req.url == '/upload' && req.method.toLowerCase() == 'post') {
+
+    // creates a new incoming form.
+    var form = new fm.IncomingForm();
+
+    // parse a file upload
+    form.parse(req, function(err, fields, files) {
+      res.writeHead(200, {
+        'content-type': 'text/plain'
+      });
+      res.write('Upload received :\n');
+      res.end(util.inspect({
+        fields: fields,
+        files: files
+      }));
+    });
+
+    form.on('end', function(fields, files) {
+      var temp_path = this.openedFiles[0].path;
+      var file_name = this.openedFiles[0].name;
+      var new_location = 'uploads/';
+      fse.copy(temp_path, new_location + file_name, function(err) {
+        if (err) {
+          log.error(err);
+        } else {
+          log.debug("File saved!");
+        }
+      });
+    });
+    return;
+  } else if (req.url == "/" || req.url == "/index.html") {
     res.writeHead(200, {
       'Content-Type': 'text/html'
     });
@@ -33,37 +65,7 @@ http.createServer(function(req, res) {
     });
     res.end(fs.readFileSync('public/ei-image.png'));
     log.debug("Sent PNG.");
-  } else if (req.method == 'POST') {
-    log.debug("POST Received.");
-
-    if (req.url === "/upload") {
-      var randomName = rs.generate();
-      var iconFile = randomName + ".png";
-      var transitData = '';
-
-      req.on('data', function(data) {
-        transitData += data;
-      });
-
-      req.on('end', function() {
-        fs.writeFile(iconFile, transitData, 'binary', function(err) {
-          if (err) throw err;
-        });
-        log.debug("File upload is complete.");
-      });
-
-      // iim(iconFile, randomName);
-
-    }
-
-  } else {
-    res.writeHead(200, {
-      'Content-Type': 'text/html'
-    });
-    res.end(fs.readFileSync('icon-sizerator.html'));
-    log.debug("Sent HTML in lieu of 404.");
   }
-
 
 }).listen(3000, "127.0.0.1");
 log.info('Started HTTP Server on localhost port 3000.');

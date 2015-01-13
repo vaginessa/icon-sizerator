@@ -30,9 +30,10 @@
         <p>
           Select local icon PNG:
         </p>
-        <form method="post" action="upload" enctype="multipart/form-data">
-          <input type="file" size="60" />
-          <input type="submit" value="Upload PNG" name="submit" />
+        <form method="post" action="/upload" enctype="multipart/form-data">
+          <input type="text" name="title" />
+          <input type="file" name="upload" multiple="multiple" />
+          <input type="submit" value="Upload" />
         </form>
       </div>
     </div>
