@@ -49,12 +49,12 @@ http.createServer(function(req, res) {
             }
           });
 
-          var zipFile = fs.createWriteStream("randomString.zip");
+          var zipFile = fs.createWriteStream(randomString + ".zip");
           var archive = ar('zip');
 
-          output.on('close', function() {
+          zipFile.on('close', function() {
             log.info(archive.pointer() + ' total bytes');
-            log.info('Zip file has been created for ' + zipFile + ' and archive has been closed.');
+            log.info('Zip file has been created for and archive has been closed.');
           });
 
           archive.on('Error', function(err) {
