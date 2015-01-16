@@ -4,6 +4,7 @@ var rs   = require('randomstring');
 var fm   = require('formidable');
 var util = require('util');
 var fse  = require('fs-extra');
+var ar   = require('archiver');
 var iim  = require('./ios-icon-maker.js');
 var log  = require('custom-logger').config({
   level: 0
@@ -32,17 +33,43 @@ http.createServer(function(req, res) {
       var randomString = rs.generate(10);
       var temp_path = this.openedFiles[0].path;
       var file_name = this.openedFiles[0].name;
-      var new_location = 'uploads/' + randomString + '/';
+      var new_location = randomString + '/';
       log.debug(randomString);
       fse.copy(temp_path, new_location + file_name, function(err) {
         if (err) {
           log.error(err);
         } else {
-          log.debug("File saved to " + new_location + file_name);
+          log.info("File saved to " + new_location + file_name);
           var sourceImage = new_location + file_name;
           log.debug(sourceImage);
           log.debug(randomString);
-          iim(sourceImage, randomString);
+          iim(sourceImage, randomString, function(err) {
+            if (err) {
+              throw err;
+            }
+          });
+
+          var zipFile = fs.createWriteStream("randomString.zip");
+          var archive = ar('zip');
+
+          output.on('close', function() {
+            log.info(archive.pointer() + ' total bytes');
+            log.info('Zip file has been created for ' + zipFile + ' and archive has been closed.');
+          });
+
+          archive.on('Error', function(err) {
+            throw err;
+          });
+
+          archive.pipe(zipFile);
+          archive.bulk([ {
+            expand: true,
+            cwd: randomString,
+            src: ['**'],
+            dest: randomString
+          }]);
+          archive.finalize();
+
         }
       });
     });

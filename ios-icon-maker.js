@@ -5,12 +5,12 @@ var log = require('custom-logger').config({
 
 module.exports = function(sourceImage, randomName) {
 
-  log.debug("In Tinacious, sourceImage is set to " + sourceImage);
-  log.debug("In Tinacious, randomName is set to " + randomName);
+  log.debug("In ios-icon-maker, sourceImage is set to " + sourceImage);
+  log.debug("In ios-icon-maker, randomName is set to " + randomName);
 
   var sizes = {
     "config": {
-      "directory": "uploads/" + randomName + "/",
+      "directory": randomName + "/",
       "prefix": "icon",
       "suffix": ".png",
       "suffixRetina": "@2x.png"
