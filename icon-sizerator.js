@@ -31,10 +31,12 @@ http.createServer(function(req, res) {
 
     form.on('end', function(fields, files) {
       var randomString = rs.generate(10);
+      log.debug(randomString);
+
       var temp_path = this.openedFiles[0].path;
       var file_name = this.openedFiles[0].name;
       var new_location = randomString + '/';
-      log.debug(randomString);
+
       fse.copy(temp_path, new_location + file_name, function(err) {
         if (err) {
           log.error(err);
@@ -53,7 +55,7 @@ http.createServer(function(req, res) {
             if (err) {
               log.error(err);
             }
-          });          
+          });
         }
       });
 

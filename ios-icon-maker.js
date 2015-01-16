@@ -65,7 +65,7 @@ module.exports = function(sourceImage, randomString) {
     // Process non-retina icons
     im.resize(options, function(err) {
       if (err) {
-        throw err;
+        log.error(err);
       }
       log.info('Created icon ' + outDir + imageName + suffix);
     });
@@ -73,7 +73,7 @@ module.exports = function(sourceImage, randomString) {
     // Process retina icons
     im.resize(optionsRetina, function(err) {
       if (err) {
-        throw err;
+        log.error(err);
       }
       log.info('Created icon ' + outDir + imageName + suffixRetina);
     });
