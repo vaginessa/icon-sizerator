@@ -3,9 +3,9 @@ var fs   = require('fs');
 var rs   = require('randomstring');
 var fm   = require('formidable');
 var util = require('util');
-var fse  = require('fs-extra');
-var iim  = require('./ios-icon-maker.js');
-var da   = require('./directory-archive.js');
+var fsExtra  = require('fs-extra');
+var iconGen  = require('./ios-icon-maker.js');
+var dirArchive   = require('./directory-archive.js');
 var log  = require('custom-logger').config({
   level: 0
 });
@@ -37,7 +37,7 @@ http.createServer(function(req, res) {
       var file_name = this.openedFiles[0].name;
       var new_location = randomString + '/';
 
-      fse.copy(temp_path, new_location + file_name, function(err) {
+      fsExtra.copy(temp_path, new_location + file_name, function(err) {
         if (err) {
           log.error(err);
         } else {
@@ -45,20 +45,19 @@ http.createServer(function(req, res) {
           var sourceImage = new_location + file_name;
           log.debug(sourceImage);
           log.debug(randomString);
-
-          iim(sourceImage, randomString, function(err) {
+          iconGen(sourceImage, randomString, function(err) {
             if (err) {
               log.error(err);
+              return;
             }
-          });
-          da(randomString, function(err) {
-            if (err) {
-              log.error(err);
-            }
+            dirArchive(randomString, function(err) {
+              if (err) {
+                log.error(err);
+              }
+            });
           });
         }
       });
-
     });
 
     return;

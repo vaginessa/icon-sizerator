@@ -77,6 +77,7 @@ module.exports = function(sourceImage, randomString) {
       }
       log.info('Created icon ' + outDir + imageName + suffixRetina);
     });
+
   });
 
 };

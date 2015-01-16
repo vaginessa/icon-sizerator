@@ -1,5 +1,5 @@
 var fs = require('fs');
-var ar = require('archiver');
+var archiver = require('archiver');
 var log  = require('custom-logger').config({
   level: 0
 });
@@ -7,9 +7,10 @@ var log  = require('custom-logger').config({
 module.exports = function(randomString) {
 
   log.debug("In directory-archive, randomString is set to " + randomString);
+  log.debug(fs.readdirSync(randomString));
 
   var zipFile = fs.createWriteStream(randomString + ".zip");
-  var archive = ar('zip');
+  var archive = archiver('zip');
 
   zipFile.on('close', function() {
     log.info(archive.pointer() + ' total bytes');
@@ -17,7 +18,8 @@ module.exports = function(randomString) {
   });
 
   archive.on('Error', function(err) {
-    throw err;
+    log.error(err);
+    return;
   });
 
   archive.pipe(zipFile);
