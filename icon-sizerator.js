@@ -54,7 +54,7 @@ http.createServer(function(req, res) {
 
           zipFile.on('close', function() {
             log.info(archive.pointer() + ' total bytes');
-            log.info('Zip file has been created for and archive has been closed.');
+            log.info('Zip file has been created and closed.');
           });
 
           archive.on('Error', function(err) {
