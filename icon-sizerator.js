@@ -5,6 +5,7 @@ var fm   = require('formidable');
 var util = require('util');
 var fsExtra  = require('fs-extra');
 var iconGen  = require('./ios-icon-maker.js');
+var async = require('async');
 var dirArchive   = require('./directory-archive.js');
 var log  = require('custom-logger').config({
   level: 0
@@ -37,27 +38,45 @@ http.createServer(function(req, res) {
       var file_name = this.openedFiles[0].name;
       var new_location = randomString + '/';
 
-      fsExtra.copy(temp_path, new_location + file_name, function(err) {
-        if (err) {
-          log.error(err);
-        } else {
-          log.info("File saved to " + new_location + file_name);
-          var sourceImage = new_location + file_name;
-          log.debug(sourceImage);
-          log.debug(randomString);
+      var sourceImage = '';
+
+      async.waterfall([
+        function(cb) {
+          fsExtra.copy(temp_path, new_location + file_name, function(err) {
+            if (err) {
+              log.error(err);
+            } else {
+              log.info("File saved to " + new_location + file_name);
+              sourceImage = new_location + file_name;
+              log.debug(sourceImage);
+              log.debug(randomString);
+            }
+            console.log('Finished running fs.copy');
+            cb(null, sourceImage, randomString);
+          });
+        },
+        function(sourceImage, randomString, cb) {
           iconGen(sourceImage, randomString, function(err) {
             if (err) {
               log.error(err);
-              return;
             }
-            dirArchive(randomString, function(err) {
-              if (err) {
-                log.error(err);
-              }
-            });
+            console.log('Finished running iim');
+            cb(null, randomString);
+          });
+        },
+        function(randomString, cb) {
+          dirArchive(randomString, function(err) {
+            if (err) {
+              log.error(err);
+            }
+            console.log('Finished running da');
+            cb();
           });
         }
-      });
+        ], function() {
+          console.log('All done!');
+        });
+
     });
 
     return;

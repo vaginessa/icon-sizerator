@@ -6,6 +6,7 @@
     "randomstring": "^1.0.3",
     "formidable": "^1.0.16",
     "fs-extra": "^0.14.0",
-    "archiver": "^0.13.1"
+    "archiver": "^0.13.1",
+    "async": "^0.9.0"
   }
 }
