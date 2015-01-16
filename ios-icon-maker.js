@@ -3,14 +3,14 @@ var log = require('custom-logger').config({
   level: 0
 });
 
-module.exports = function(sourceImage, randomName) {
+module.exports = function(sourceImage, randomString) {
 
   log.debug("In ios-icon-maker, sourceImage is set to " + sourceImage);
-  log.debug("In ios-icon-maker, randomName is set to " + randomName);
+  log.debug("In ios-icon-maker, randomString is set to " + randomString);
 
   var sizes = {
     "config": {
-      "directory": randomName + "/",
+      "directory": randomString + "/",
       "prefix": "icon",
       "suffix": ".png",
       "suffixRetina": "@2x.png"

@@ -4,8 +4,8 @@ var rs   = require('randomstring');
 var fm   = require('formidable');
 var util = require('util');
 var fse  = require('fs-extra');
-var ar   = require('archiver');
 var iim  = require('./ios-icon-maker.js');
+var da   = require('./directory-archive.js');
 var log  = require('custom-logger').config({
   level: 0
 });
@@ -43,36 +43,22 @@ http.createServer(function(req, res) {
           var sourceImage = new_location + file_name;
           log.debug(sourceImage);
           log.debug(randomString);
+
           iim(sourceImage, randomString, function(err) {
             if (err) {
-              throw err;
+              log.error(err);
             }
           });
-
-          var zipFile = fs.createWriteStream(randomString + ".zip");
-          var archive = ar('zip');
-
-          zipFile.on('close', function() {
-            log.info(archive.pointer() + ' total bytes');
-            log.info('Zip file has been created and closed.');
-          });
-
-          archive.on('Error', function(err) {
-            throw err;
-          });
-
-          archive.pipe(zipFile);
-          archive.bulk([ {
-            expand: true,
-            cwd: randomString,
-            src: ['**'],
-            dest: randomString
-          }]);
-          archive.finalize();
-
+          da(randomString, function(err) {
+            if (err) {
+              log.error(err);
+            }
+          });          
         }
       });
+
     });
+
     return;
   } else if (req.url == "/" || req.url == "/index.html") {
     res.writeHead(200, {
