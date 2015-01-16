@@ -38,7 +38,11 @@ http.createServer(function(req, res) {
         if (err) {
           log.error(err);
         } else {
-          log.debug("File saved!");
+          log.debug("File saved to " + new_location + file_name);
+          var sourceImage = new_location + file_name;
+          log.debug(sourceImage);
+          log.debug(randomString);
+          iim(sourceImage, randomString);
         }
       });
     });
