@@ -1,13 +1,13 @@
 var http = require('http');
-var fs   = require('fs');
-var rs   = require('randomstring');
-var fm   = require('formidable');
+var fs = require('fs');
+var rs = require('randomstring');
+var fm = require('formidable');
 var im = require('imagemagick');
 var util = require('util');
 var archiver = require('archiver');
-var fsExtra  = require('fs-extra');
+var fsExtra = require('fs-extra');
 var async = require('async');
-var log  = require('custom-logger').config({
+var log = require('custom-logger').config({
   level: 0
 });
 
@@ -30,135 +30,140 @@ http.createServer(function(req, res) {
       }));
     });
 
-    form.on('end', function(fields, files) {
-      var randomString = rs.generate(10);
-      log.debug(randomString);
+    var temp_path = '';
+    var file_name = '';
+    var new_location = '';
+    var randomString = '';
+    var sourceImage = '';
 
-      var temp_path = this.openedFiles[0].path;
-      var file_name = this.openedFiles[0].name;
-      var new_location = randomString + '/';
+    async.waterfall([
+      function(cb) {
+        form.on('end', function(fields, files) {
+          randomString = rs.generate(10);
+          log.debug(randomString);
 
-      var sourceImage = '';
+          temp_path = this.openedFiles[0].path;
+          file_name = this.openedFiles[0].name;
+          new_location = randomString + '/';
 
-      async.waterfall([
-        function(cb) {
-          fsExtra.copy(temp_path, new_location + file_name, function(err) {
-            if (err) {
-              log.error(err);
-            } else {
-              log.info("File saved to " + new_location + file_name);
-              sourceImage = new_location + file_name;
-              log.debug(sourceImage);
-              log.debug(randomString);
-            }
-            log.debug('Finished running fsExtra.copy');
-            cb(null, sourceImage, randomString);
-          });
-        },
-        function(sourceImage, randomString, cb) {
-          var sizes = {
-            "config": {
-              "directory": randomString + "/",
-              "prefix": "icon",
-              "suffix": ".png",
-              "suffixRetina": "@2x.png"
-            },
-            "data": [{
-              "size": 29,
-              "customDefault": "-small"
-            }, {
-              "size": 40
-            }, {
-              "size": 50
-            }, {
-              "size": 57,
-              "customDefault": ""
-            }, {
-              "size": 60
-            }, {
-              "size": 72
-            }, {
-              "size": 76
-            }]
+          sourceImage = '';
+          log.debug('Finished form open');
+          cb();
+        });
+      },
+      function(cb) {
+        fsExtra.copy(temp_path, new_location + file_name, function(err) {
+          if (err) {
+            log.error(err);
+          } else {
+            log.info("File saved to " + new_location + file_name);
+            sourceImage = new_location + file_name;
+            log.debug(sourceImage);
+            log.debug(randomString);
+          }
+          log.debug('Finished running fsExtra.copy');
+          cb();
+        });
+      },
+      function(cb) {
+        var sizes = {
+          "config": {
+            "directory": randomString + "/",
+            "prefix": "icon",
+            "suffix": ".png",
+            "suffixRetina": "@2x.png"
+          },
+          "data": [{
+            "size": 29,
+            "customDefault": "-small"
+          }, {
+            "size": 40
+          }, {
+            "size": 50
+          }, {
+            "size": 57,
+            "customDefault": ""
+          }, {
+            "size": 60
+          }, {
+            "size": 72
+          }, {
+            "size": 76
+          }]
+        };
+
+        sizes.data.map(function(value, index) {
+          // Output directory
+          var outDir = sizes.config.directory;
+
+          // Image name changes if `customDefault` is defined
+          var imageName = sizes.config.prefix;
+          imageName += (typeof value.customDefault) !== 'undefined' ? value.customDefault : '-' + value.size;
+
+          // Image suffix and extension for retina and non-retina
+          var suffix = sizes.config.suffix;
+          var suffixRetina = sizes.config.suffixRetina;
+
+          // ImageMagick options for non-retina
+          var options = {
+            srcPath: sourceImage,
+            quality: 1,
+            dstPath: outDir + imageName + suffix,
+            width: value.size
           };
 
-          sizes.data.map(function(value, index) {
-            // Output directory
-            var outDir = sizes.config.directory;
+          // ImageMagick options for retina
+          var optionsRetina = {
+            srcPath: sourceImage,
+            quality: 1,
+            dstPath: outDir + imageName + suffixRetina,
+            width: (value.size) * 2
+          };
 
-            // Image name changes if `customDefault` is defined
-            var imageName = sizes.config.prefix;
-            imageName += (typeof value.customDefault) !== 'undefined' ? value.customDefault : '-' + value.size;
-
-            // Image suffix and extension for retina and non-retina
-            var suffix = sizes.config.suffix;
-            var suffixRetina = sizes.config.suffixRetina;
-
-            // ImageMagick options for non-retina
-            var options = {
-              srcPath: sourceImage,
-              quality: 1,
-              dstPath: outDir + imageName + suffix,
-              width: value.size
-            };
-
-            // ImageMagick options for retina
-            var optionsRetina = {
-              srcPath: sourceImage,
-              quality: 1,
-              dstPath: outDir + imageName + suffixRetina,
-              width: (value.size) * 2
-            };
-
-            // Process non-retina icons
-            im.resize(options, function(err) {
-              if (err) {
-                log.error(err);
-              }
-              log.info('Created icon ' + outDir + imageName + suffix);
-            });
-
-            // Process retina icons
-            im.resize(optionsRetina, function(err) {
-              if (err) {
-                log.error(err);
-              }
-              log.info('Created icon ' + outDir + imageName + suffixRetina);
-            });
-
+          // Process non-retina icons
+          im.resize(options, function(err) {
+            if (err) {
+              log.error(err);
+            }
+            log.info('Created icon ' + outDir + imageName + suffix);
           });
-          log.debug('Finished running iconGen');
-          cb(null, randomString);
-        },
-        function(randomString, cb) {
 
-          setTimeout(log.debug("Sleep"),10000);
+          // Process retina icons
+          im.resize(optionsRetina, function(err) {
+            if (err) {
+              log.error(err);
+            }
+            log.info('Created icon ' + outDir + imageName + suffixRetina);
+          });
 
-          var zipFile = fs.createWriteStream(randomString + ".zip");
-          var archive = archiver('zip');
-          zipFile.on('close', function() {
-            log.info(archive.pointer() + ' total bytes');
-            log.info(randomString + '.zip has been created and closed.');
-          });
-          archive.on('Error', function(err) {
-            log.error(err);
-            return;
-          });
-          archive.pipe(zipFile);
-          archive.bulk([ {
-            expand: true,
-            cwd: randomString,
-            src: ['**'],
-            dest: randomString
-          }]);
-          archive.finalize();
-          log.debug('Finished running dirArchive');
-          cb();
-        }
-        ], function() {
-          console.log('All done!');
         });
-
+        log.debug('Finished running iconGen');
+        cb();
+      },
+      function(cb) {
+        var zipFile = fs.createWriteStream(randomString + ".zip");
+        var archive = archiver('zip');
+        zipFile.on('close', function() {
+          log.info(archive.pointer() + ' total bytes');
+          log.info(randomString + '.zip has been created and closed.');
+        });
+        archive.on('Error', function(err) {
+          log.error(err);
+          return;
+        });
+        archive.pipe(zipFile);
+        archive.bulk([{
+          expand: true,
+          cwd: randomString,
+          src: ['**'],
+          dest: randomString
+        }]);
+        archive.finalize();
+        log.debug('Finished running dirArchive');
+        cb();
+      }
+    ], function() {
+      log.debug('All done!');
     });
 
     return;
