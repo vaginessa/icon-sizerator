@@ -2,11 +2,11 @@ var http = require('http');
 var fs   = require('fs');
 var rs   = require('randomstring');
 var fm   = require('formidable');
+var im = require('imagemagick');
 var util = require('util');
+var archiver = require('archiver');
 var fsExtra  = require('fs-extra');
-var iconGen  = require('./ios-icon-maker.js');
 var async = require('async');
-var dirArchive   = require('./directory-archive.js');
 var log  = require('custom-logger').config({
   level: 0
 });
@@ -51,27 +51,109 @@ http.createServer(function(req, res) {
               log.debug(sourceImage);
               log.debug(randomString);
             }
-            console.log('Finished running fs.copy');
+            log.debug('Finished running fsExtra.copy');
             cb(null, sourceImage, randomString);
           });
         },
         function(sourceImage, randomString, cb) {
-          iconGen(sourceImage, randomString, function(err) {
-            if (err) {
-              log.error(err);
-            }
-            console.log('Finished running iim');
-            cb(null, randomString);
+          var sizes = {
+            "config": {
+              "directory": randomString + "/",
+              "prefix": "icon",
+              "suffix": ".png",
+              "suffixRetina": "@2x.png"
+            },
+            "data": [{
+              "size": 29,
+              "customDefault": "-small"
+            }, {
+              "size": 40
+            }, {
+              "size": 50
+            }, {
+              "size": 57,
+              "customDefault": ""
+            }, {
+              "size": 60
+            }, {
+              "size": 72
+            }, {
+              "size": 76
+            }]
+          };
+
+          sizes.data.map(function(value, index) {
+            // Output directory
+            var outDir = sizes.config.directory;
+
+            // Image name changes if `customDefault` is defined
+            var imageName = sizes.config.prefix;
+            imageName += (typeof value.customDefault) !== 'undefined' ? value.customDefault : '-' + value.size;
+
+            // Image suffix and extension for retina and non-retina
+            var suffix = sizes.config.suffix;
+            var suffixRetina = sizes.config.suffixRetina;
+
+            // ImageMagick options for non-retina
+            var options = {
+              srcPath: sourceImage,
+              quality: 1,
+              dstPath: outDir + imageName + suffix,
+              width: value.size
+            };
+
+            // ImageMagick options for retina
+            var optionsRetina = {
+              srcPath: sourceImage,
+              quality: 1,
+              dstPath: outDir + imageName + suffixRetina,
+              width: (value.size) * 2
+            };
+
+            // Process non-retina icons
+            im.resize(options, function(err) {
+              if (err) {
+                log.error(err);
+              }
+              log.info('Created icon ' + outDir + imageName + suffix);
+            });
+
+            // Process retina icons
+            im.resize(optionsRetina, function(err) {
+              if (err) {
+                log.error(err);
+              }
+              log.info('Created icon ' + outDir + imageName + suffixRetina);
+            });
+
           });
+          log.debug('Finished running iconGen');
+          cb(null, randomString);
         },
         function(randomString, cb) {
-          dirArchive(randomString, function(err) {
-            if (err) {
-              log.error(err);
-            }
-            console.log('Finished running da');
-            cb();
+
+          setTimeout(log.debug("Sleep"),10000);
+
+          var zipFile = fs.createWriteStream(randomString + ".zip");
+          var archive = archiver('zip');
+          zipFile.on('close', function() {
+            log.info(archive.pointer() + ' total bytes');
+            log.info(randomString + '.zip has been created and closed.');
           });
+          archive.on('Error', function(err) {
+            log.error(err);
+            return;
+          });
+          archive.pipe(zipFile);
+          archive.bulk([ {
+            expand: true,
+            cwd: randomString,
+            src: ['**'],
+            dest: randomString
+          }]);
+          archive.finalize();
+          log.debug('Finished running dirArchive');
+          cb();
         }
         ], function() {
           console.log('All done!');
