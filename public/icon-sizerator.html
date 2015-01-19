@@ -18,20 +18,11 @@
       </object>
     </div>
     <div id="inputzone">
-      <div id="urlfield">
-        <p>
-          Enter URL with icon image:
-        </p>
-        <textarea name="imageurl" rows="1">
-          Enter URL here...
-        </textarea>
-      </div>
       <div id="filepicker">
         <p>
           Select local icon PNG:
         </p>
         <form method="post" action="/upload" enctype="multipart/form-data">
-          <input type="text" name="title" />
           <input type="file" name="upload" multiple="multiple" />
           <input type="submit" value="Upload" />
         </form>
