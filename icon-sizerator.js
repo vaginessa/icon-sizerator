@@ -2,7 +2,7 @@ var http = require('http');
 var fs = require('fs');
 var rs = require('randomstring');
 var fm = require('formidable');
-var im = require('lwip');
+var im = require('imagemagick');
 var util = require('util');
 var archiver = require('archiver');
 var fsExtra = require('fs-extra');
@@ -71,7 +71,8 @@ http.createServer(function(req, res) {
             "directory": randomString + "/",
             "prefix": "icon",
             "suffix": ".png",
-            "suffixRetina": "@2x.png"
+            "suffixRetina": "@2x.png",
+            "suffixRetinaPlus": "@3x.png"
           },
           "data": [{
             "size": 29,
@@ -103,6 +104,7 @@ http.createServer(function(req, res) {
           // Image suffix and extension for retina and non-retina
           var suffix = sizes.config.suffix;
           var suffixRetina = sizes.config.suffixRetina;
+          var suffixRetinaPlus = sizes.config.suffixRetinaPlus;
 
           // ImageMagick options for non-retina
           var options = {
@@ -118,6 +120,13 @@ http.createServer(function(req, res) {
             quality: 1,
             dstPath: outDir + imageName + suffixRetina,
             width: (value.size) * 2
+          };
+
+          var optionsRetinaPlus = {
+            srcPath: sourceImage,
+            quality: 1,
+            dstPath: outDir + imageName + suffixRetinaPlus,
+            width: (value.size) * 3
           };
 
           // Process non-retina icons
@@ -136,6 +145,14 @@ http.createServer(function(req, res) {
             log.info('Created icon ' + outDir + imageName + suffixRetina);
           });
 
+          im.resize(optionsRetinaPlus, function(err) {
+            if (err) {
+              log.error(err);
+            }
+            log.info('Created icon ' + outDir + imageName + suffixRetinaPlus);
+          });
+
+
         });
         log.debug('Finished running iconGen');
         cb();
@@ -152,12 +169,13 @@ http.createServer(function(req, res) {
           return;
         });
         archive.pipe(zipFile);
+
         archive.bulk([{
           expand: true,
           cwd: randomString,
-          src: ['**'],
-          dest: randomString
+          src: ['**']
         }]);
+
         archive.finalize();
         log.debug('Finished running dirArchive');
         cb();
