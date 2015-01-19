@@ -189,13 +189,13 @@ http.createServer(function(req, res) {
     res.writeHead(200, {
       'Content-Type': 'text/html'
     });
-    res.end(fs.readFileSync('icon-sizerator.html'));
+    res.end(fs.readFileSync('public/icon-sizerator.html'));
     log.debug("Sent HTML.");
   } else if (req.url == "/icon-sizerator.css") {
     res.writeHead(200, {
       'Content-Type': 'text/css'
     });
-    res.end(fs.readFileSync('icon-sizerator.css'));
+    res.end(fs.readFileSync('public/icon-sizerator.css'));
     log.debug("Sent CSS.");
   } else if (req.url == "/ei-image.svg") {
     res.writeHead(200, {
