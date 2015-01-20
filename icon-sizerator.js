@@ -2,7 +2,7 @@ var http = require('http');
 var fs = require('fs');
 var rs = require('randomstring');
 var fm = require('formidable');
-var im = require('imagemagick');
+var im = require('imagemagick-native');
 var util = require('util');
 var archiver = require('archiver');
 var fsExtra = require('fs-extra');
@@ -20,6 +20,7 @@ http.createServer(function(req, res) {
 
     // parse a file upload
     form.parse(req, function(err, fields, files) {
+      /*
       res.writeHead(200, {
         'content-type': 'text/plain'
       });
@@ -28,6 +29,7 @@ http.createServer(function(req, res) {
         fields: fields,
         files: files
       }));
+      */
     });
 
     var temp_path = '';
@@ -66,6 +68,23 @@ http.createServer(function(req, res) {
         });
       },
       function(cb) {
+
+        var header = {
+          "Content-Type": "application/x-zip",
+          "Pragma": "public",
+          "Expires": "0",
+          "Cache-Control": "private, must-revalidate, post-check=0, pre-check=0",
+          "Content-disposition": 'attachment; filename="' + randomString + ".zip" + '"',
+          "Transfer-Encoding": "chunked",
+          "Content-Transfer-Encoding": "binary"
+        };
+
+        var zip = archiver('zip');
+
+        res.writeHead(200, header);
+        zip.store = true;  // don't compress the archive
+        zip.pipe(res);
+
         var sizes = {
           "config": {
             "directory": randomString + "/",
@@ -129,12 +148,36 @@ http.createServer(function(req, res) {
             width: (value.size) * 3
           };
 
+          fs.writeFileSync("target.png", im.convert({
+            srcData: fs.readFileSync(sourceImage),
+            width: 100,
+            height: 100
+          }));
+          log.debug('Image resized.');
+
+          zip.file('target.png', {
+            name: 'target.png'
+          });
+          log.debug('Added to zip');
+
+          // ^^^^ Integrate this against all the files, correct params etc.
+          // Also, tie this in with the archive stuff.
+
+          /*
           // Process non-retina icons
           im.resize(options, function(err) {
             if (err) {
               log.error(err);
             }
             log.info('Created icon ' + outDir + imageName + suffix);
+            fs.readFile(outDir + imageName + suffix, function(err) {
+              if (err) {
+                log.error(err);
+              }
+              zip.file(outDir + imageName + suffix, {
+                name: outDir + imageName + suffix
+              });
+            });
           });
 
           // Process retina icons
@@ -143,6 +186,14 @@ http.createServer(function(req, res) {
               log.error(err);
             }
             log.info('Created icon ' + outDir + imageName + suffixRetina);
+            fs.readFile(outDir + imageName + suffixRetina, function(err) {
+              if (err) {
+                log.error(err);
+              }
+              zip.file(outDir + imageName + suffixRetina, {
+                name: outDir + imageName + suffixRetina
+              });
+            });
           });
 
           im.resize(optionsRetinaPlus, function(err) {
@@ -150,34 +201,23 @@ http.createServer(function(req, res) {
               log.error(err);
             }
             log.info('Created icon ' + outDir + imageName + suffixRetinaPlus);
+            fs.readFile(outDir + imageName + suffixRetinaPlus, function(err) {
+              if (err) {
+                log.error(err);
+              }
+              zip.file(outDir + imageName + suffixRetinaPlus, {
+                name: outDir + imageName + suffixRetinaPlus
+              });
+            });
           });
-
+          */
 
         });
         log.debug('Finished running iconGen');
-        cb();
-      },
-      function(cb) {
-        var zipFile = fs.createWriteStream(randomString + ".zip");
-        var archive = archiver('zip');
-        zipFile.on('close', function() {
-          log.info(archive.pointer() + ' total bytes');
-          log.info(randomString + '.zip has been created and closed.');
-        });
-        archive.on('Error', function(err) {
-          log.error(err);
-          return;
-        });
-        archive.pipe(zipFile);
 
-        archive.bulk([{
-          expand: true,
-          cwd: randomString,
-          src: ['**']
-        }]);
+        zip.finalize();
+        log.debug('Zip ready for delivery');
 
-        archive.finalize();
-        log.debug('Finished running dirArchive');
         cb();
       }
     ], function() {
