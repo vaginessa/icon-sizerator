@@ -20,16 +20,6 @@ http.createServer(function(req, res) {
 
     // parse a file upload
     form.parse(req, function(err, fields, files) {
-      /*
-      res.writeHead(200, {
-        'content-type': 'text/plain'
-      });
-      res.write('Upload received :\n');
-      res.end(util.inspect({
-        fields: fields,
-        files: files
-      }));
-      */
     });
 
     var temp_path = '';
@@ -69,6 +59,32 @@ http.createServer(function(req, res) {
       },
       function(cb) {
 
+        var iconsNamesSizesDict = {
+          "icon-29.png" : 29,
+          "icon-40.png" : 40,
+          "icon-50.png" : 50,
+          "icon-57.png" : 57,
+          "icon-60.png" : 60,
+          "icon-72.png" : 72,
+          "icon-76.png" : 76,
+          "icon-29@2x.png" : 58,
+          "icon-40@2x.png" : 80,
+          "icon-50@2x.png" : 100,
+          "icon-57@2x.png" : 114,
+          "icon-60@2x.png" : 120,
+          "icon-72@2x.png" : 144,
+          "icon-76@2x.png" : 152,
+          "icon-29@3x.png" : 87,
+          "icon-40@3x.png" : 120,
+          "icon-50@3x.png" : 150,
+          "icon-57@3x.png" : 171,
+          "icon-60@3x.png" : 180,
+          "icon-72@3x.png" : 216,
+          "icon-76@3x.png" : 228
+        };
+
+        var outDir = randomString + "/";
+
         var header = {
           "Content-Type": "application/x-zip",
           "Pragma": "public",
@@ -85,134 +101,20 @@ http.createServer(function(req, res) {
         zip.store = true;  // don't compress the archive
         zip.pipe(res);
 
-        var sizes = {
-          "config": {
-            "directory": randomString + "/",
-            "prefix": "icon",
-            "suffix": ".png",
-            "suffixRetina": "@2x.png",
-            "suffixRetinaPlus": "@3x.png"
-          },
-          "data": [{
-            "size": 29,
-            "customDefault": "-small"
-          }, {
-            "size": 40
-          }, {
-            "size": 50
-          }, {
-            "size": 57,
-            "customDefault": ""
-          }, {
-            "size": 60
-          }, {
-            "size": 72
-          }, {
-            "size": 76
-          }]
-        };
-
-        sizes.data.map(function(value, index) {
-          // Output directory
-          var outDir = sizes.config.directory;
-
-          // Image name changes if `customDefault` is defined
-          var imageName = sizes.config.prefix;
-          imageName += (typeof value.customDefault) !== 'undefined' ? value.customDefault : '-' + value.size;
-
-          // Image suffix and extension for retina and non-retina
-          var suffix = sizes.config.suffix;
-          var suffixRetina = sizes.config.suffixRetina;
-          var suffixRetinaPlus = sizes.config.suffixRetinaPlus;
-
-          // ImageMagick options for non-retina
-          var options = {
-            srcPath: sourceImage,
-            quality: 1,
-            dstPath: outDir + imageName + suffix,
-            width: value.size
-          };
-
-          // ImageMagick options for retina
-          var optionsRetina = {
-            srcPath: sourceImage,
-            quality: 1,
-            dstPath: outDir + imageName + suffixRetina,
-            width: (value.size) * 2
-          };
-
-          var optionsRetinaPlus = {
-            srcPath: sourceImage,
-            quality: 1,
-            dstPath: outDir + imageName + suffixRetinaPlus,
-            width: (value.size) * 3
-          };
-
-          fs.writeFileSync("target.png", im.convert({
+        for(var index in iconsNamesSizesDict) {
+          fs.writeFileSync(outDir + index, im.convert({
             srcData: fs.readFileSync(sourceImage),
-            width: 100,
-            height: 100
+            width: iconsNamesSizesDict[index],
+            height: iconsNamesSizesDict[index]
           }));
-          log.debug('Image resized.');
+          log.debug(index + 'image resized.');
 
-          zip.file('target.png', {
-            name: 'target.png'
+          zip.file(outDir + index, {
+            name: index
           });
           log.debug('Added to zip');
+        }
 
-          // ^^^^ Integrate this against all the files, correct params etc.
-          // Also, tie this in with the archive stuff.
-
-          /*
-          // Process non-retina icons
-          im.resize(options, function(err) {
-            if (err) {
-              log.error(err);
-            }
-            log.info('Created icon ' + outDir + imageName + suffix);
-            fs.readFile(outDir + imageName + suffix, function(err) {
-              if (err) {
-                log.error(err);
-              }
-              zip.file(outDir + imageName + suffix, {
-                name: outDir + imageName + suffix
-              });
-            });
-          });
-
-          // Process retina icons
-          im.resize(optionsRetina, function(err) {
-            if (err) {
-              log.error(err);
-            }
-            log.info('Created icon ' + outDir + imageName + suffixRetina);
-            fs.readFile(outDir + imageName + suffixRetina, function(err) {
-              if (err) {
-                log.error(err);
-              }
-              zip.file(outDir + imageName + suffixRetina, {
-                name: outDir + imageName + suffixRetina
-              });
-            });
-          });
-
-          im.resize(optionsRetinaPlus, function(err) {
-            if (err) {
-              log.error(err);
-            }
-            log.info('Created icon ' + outDir + imageName + suffixRetinaPlus);
-            fs.readFile(outDir + imageName + suffixRetinaPlus, function(err) {
-              if (err) {
-                log.error(err);
-              }
-              zip.file(outDir + imageName + suffixRetinaPlus, {
-                name: outDir + imageName + suffixRetinaPlus
-              });
-            });
-          });
-          */
-
-        });
         log.debug('Finished running iconGen');
 
         zip.finalize();
