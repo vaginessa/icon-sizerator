@@ -8,7 +8,7 @@ var archiver = require('archiver');
 var fsExtra = require('fs-extra');
 var async = require('async');
 var log = require('custom-logger').config({
-  level: 0
+  level: 1
 });
 
 http.createServer(function(req, res) {
@@ -115,7 +115,7 @@ http.createServer(function(req, res) {
           log.debug('Added to zip');
         }
 
-        log.debug('Finished running iconGen');
+        log.info('Finished generating icons for ' + sourceImage);
 
         zip.finalize();
         log.info("Successfully delivered " + randomString + ".zip");
