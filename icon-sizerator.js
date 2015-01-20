@@ -36,7 +36,7 @@ http.createServer(function(req, res) {
 
           temp_path = this.openedFiles[0].path;
           file_name = this.openedFiles[0].name;
-          new_location = randomString + '/';
+          new_location = 'uploads/' + randomString + '/';
 
           sourceImage = '';
           log.debug('Finished form open');
@@ -83,7 +83,7 @@ http.createServer(function(req, res) {
           "icon-76@3x.png" : 228
         };
 
-        var outDir = randomString + "/";
+        var outDir = "uploads/" + randomString + "/";
 
         var header = {
           "Content-Type": "application/x-zip",
@@ -118,7 +118,7 @@ http.createServer(function(req, res) {
         log.debug('Finished running iconGen');
 
         zip.finalize();
-        log.debug('Zip ready for delivery');
+        log.info("Successfully delivered " + randomString + ".zip");
 
         cb();
       }
