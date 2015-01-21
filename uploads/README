@@ -1,1 +1,8 @@
 Clean this out regularly.
+
+Something like:
+
+`find "$FILEDIR" -type d -mtime +2 -delete` in cron will clean up nicely.
+
+Please do your homework and work out what's appropriate for your specific
+system.

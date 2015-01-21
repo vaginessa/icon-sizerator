@@ -8,7 +8,8 @@ var archiver = require('archiver');
 var fsExtra  = require('fs-extra');
 var async    = require('async');
 var log      = require('custom-logger').config({
-  level: 1
+  level: 1,
+  timestamp: "yyyy/mm/dd HH:MM:ss"
 });
 
 http.createServer(function(req, res) {
