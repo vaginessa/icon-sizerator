@@ -26,5 +26,5 @@ Contributions of issues and pull requests are most welcome.
 
 ## TODO
 
-* Auto-clean stale uploads/* folders; currently this is performed by a cron job, but this should happen within the code itself.
-
+* Auto-clean stale uploads/* folders; currently this is performed by a cron job, but this should happen within the code itself.  Or...
+* Alternatively, modify code to not need the on-disk folder, thus eliminating IO entirely.
