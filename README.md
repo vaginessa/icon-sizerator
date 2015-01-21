@@ -26,5 +26,5 @@ Contributions of issues and pull requests are most welcome.
 
 ## TODO
 
-* Auto-clean stale uploads/* folders; currently this is performed by a cron job, but this should happen within the code itself.  Or...
-* Alternatively, modify code to not need the on-disk folder, thus eliminating IO entirely.
+* Auto-clean stale uploads/* folders; currently this is performed by a cron job, but this should natively within icon-sizerator.js  Or...
+* Alternatively a better solution would be to modify code to not need the on-disk folder, thus eliminating IO entirely.
