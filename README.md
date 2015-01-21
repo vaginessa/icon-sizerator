@@ -9,3 +9,5 @@ You can of course use the provided service at http://icon-sizerator.davidjpeacoc
 Contributions of issues and pull requests are most welcome.
 
 TODO: Auto-clean stale uploads/* folders; currently this is performed by a cron job, but this should happen within the code itself.
+
+![](https://github.com/davidjpeacock/icon-sizerator/blob/master/icon-sizerator-ss.png)
