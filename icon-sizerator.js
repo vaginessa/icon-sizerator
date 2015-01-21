@@ -1,13 +1,13 @@
-var http = require('http');
-var fs = require('fs');
-var rs = require('randomstring');
-var fm = require('formidable');
-var im = require('imagemagick-native');
-var util = require('util');
+var http     = require('http');
+var fs       = require('fs');
+var rs       = require('randomstring');
+var fm       = require('formidable');
+var im       = require('imagemagick-native');
+var util     = require('util');
 var archiver = require('archiver');
-var fsExtra = require('fs-extra');
-var async = require('async');
-var log = require('custom-logger').config({
+var fsExtra  = require('fs-extra');
+var async    = require('async');
+var log      = require('custom-logger').config({
   level: 1
 });
 
@@ -15,10 +15,8 @@ http.createServer(function(req, res) {
 
   if (req.url == '/upload' && req.method.toLowerCase() == 'post') {
 
-    // creates a new incoming form.
     var form = new fm.IncomingForm();
 
-    // parse a file upload
     form.parse(req, function(err, fields, files) {
     });
 
