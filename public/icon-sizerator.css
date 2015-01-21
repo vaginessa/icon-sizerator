@@ -1,7 +1,7 @@
 /* CSS declarations go here */
 
 body {
-  background: #54EEEF;
+  background: #59C7B2;
 }
 h1 {
   border: 5px solid #FFFFFF;
@@ -28,6 +28,9 @@ div {
 }
 textarea {
   width: 100%
+}
+.fa {
+  color: #ffffff;
 }
 #boxen {
   padding-top: 5%;
