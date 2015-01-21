@@ -12,7 +12,7 @@ You upload a source icon PNG of at least 1024x1024, and we'll instantly deliver 
 
 ## Installation
 
-If you wish to install this locally you can do so simply:
+If you wish to install this locally, you'll need to install ImageMagick through your preferred platform method, then you can simply:
 ```
 git clone https://github.com/davidjpeacock/icon-sizerator.git
 cd icon-sizerator/
