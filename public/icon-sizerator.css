@@ -27,8 +27,25 @@ div {
 textarea {
   width: 100%
 }
+a:link {
+  color: #ffffff;
+  text-decoration: none;
+}
+a:visited {
+  color: #ffffff;
+  text-decoration: none;
+}
+a:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+a:active {
+  color: #ffffff;
+  text-decoration: none;
+}
 .fa {
   color: #ffffff;
+  text-decoration: none;
 }
 #boxen {
   padding-top: 5%;
