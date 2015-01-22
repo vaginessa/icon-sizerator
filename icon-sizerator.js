@@ -13,7 +13,7 @@ var log      = require('custom-logger').config({
 });
 
 // Set installedPath as appropriate
-var installedPath = "/path/to/install";
+var installedPath = __dirname + "/";
 
 http.createServer(function(req, res) {
 
