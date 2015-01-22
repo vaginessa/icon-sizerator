@@ -1,4 +1,4 @@
-# Icon Sizerator - Apple App Store icon generator
+# Icon Sizerator - iOS App icon size generator
 
 This tool is a standalone service built in JavaScript on Node.js, which serves to assist iOS App creators in icon generation.
 
