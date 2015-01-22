@@ -8,7 +8,7 @@ Icon Sizerator is designed with throughput and low-cost in mind.  The backend im
 
 ## Usage
 
-You upload a source icon PNG of at least 1024x1024, and we'll instantly deliver a zip file filled with all the right sizes!  You can of course use the provided service at http://icon-sizerator.davidjpeacock.ca/
+You upload a source icon PNG or JPEG of at least 1024x1024, wait a little while, and we'll deliver a zip file filled with all the right sizes!  You can of course use the provided service at http://icon-sizerator.davidjpeacock.ca/
 
 ## Installation
 
