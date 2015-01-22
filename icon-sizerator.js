@@ -12,7 +12,6 @@ var log      = require('custom-logger').config({
   timestamp: "yyyy/mm/dd HH:MM:ss"
 });
 
-// Set installedPath as appropriate
 var installedPath = __dirname + "/";
 
 http.createServer(function(req, res) {
@@ -35,6 +34,18 @@ http.createServer(function(req, res) {
         form.on('end', function(fields, files) {
           randomString = rs.generate(10);
           log.debug(randomString);
+
+          if (this.openedFiles[0].type != "image/png") {
+
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.write("<html><head><title>Icon Sizerator</title></head><body>Please only submit PNG images.</body></html>");
+            res.end();
+
+            log.error("Non-PNG file caught. Advising user to only submit .png files.");
+
+            return;
+
+          }
 
           temp_path = this.openedFiles[0].path;
           file_name = this.openedFiles[0].name;
