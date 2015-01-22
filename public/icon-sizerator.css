@@ -2,24 +2,22 @@
 
 body {
   background: #59C7B2;
+  font-family: 'Roboto', sans-serif;
 }
 h1 {
   border: 5px solid #FFFFFF;
   border-radius: 8px;
-  font-family: Roboto;
   font-size: 6vw;
   color: #FFFFFF;
   text-align: center;
   margin: 0;
 }
 h2 {
-  font-family: AvenirNext-Regular;
   font-size: 1.7vw;
   color: #FFFFFF;
   text-align: center;
 }
 p {
-  font-family: AvenirNext-Regular;
   font-size: 1.7vw;
   color: #FFFFFF;
 }
