@@ -35,21 +35,15 @@ http.createServer(function(req, res) {
           randomString = rs.generate(10);
           log.debug(randomString);
 
-          // if( (A && !B) || (B && !A) ) { ... }
           if (this.openedFiles[0].type == "image/png") {
-
           } else if (this.openedFiles[0].type == "image/jpeg") {
-
           } else {
-
             res.writeHead(200, { 'Content-Type': 'text/html' });
             res.write("<html><head><title>Icon Sizerator</title></head><body>Please only submit PNG or JPEG images.</body></html>");
             res.end();
 
             log.error("Non-PNG or JPEG file caught. Advising user to only submit .png or .jpg files.");
-
             return;
-
           }
 
           temp_path = this.openedFiles[0].path;
