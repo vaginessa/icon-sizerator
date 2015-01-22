@@ -12,6 +12,9 @@ var log      = require('custom-logger').config({
   timestamp: "yyyy/mm/dd HH:MM:ss"
 });
 
+// Set installedPath as appropriate
+var installedPath = "/home/peacock/production/icon-sizerator/";
+
 http.createServer(function(req, res) {
 
   if (req.url == '/upload' && req.method.toLowerCase() == 'post') {
@@ -35,7 +38,7 @@ http.createServer(function(req, res) {
 
           temp_path = this.openedFiles[0].path;
           file_name = this.openedFiles[0].name;
-          new_location = '/home/peacock/production/icon-sizerator/uploads/' + randomString + '/';
+          new_location = installedPath + 'uploads/' + randomString + '/';
 
           sourceImage = '';
           log.debug('Finished form open');
@@ -82,7 +85,7 @@ http.createServer(function(req, res) {
           "icon-76@3x.png" : 228
         };
 
-        var outDir = "/home/peacock/production/icon-sizerator/uploads/" + randomString + "/";
+        var outDir = installedPath + "uploads/" + randomString + "/";
 
         var header = {
           "Content-Type": "application/x-zip",
@@ -130,25 +133,25 @@ http.createServer(function(req, res) {
     res.writeHead(200, {
       'Content-Type': 'text/html'
     });
-    res.end(fs.readFileSync('/home/peacock/production/icon-sizerator/public/icon-sizerator.html'));
+    res.end(fs.readFileSync(installedPath + 'public/icon-sizerator.html'));
     log.debug("Sent HTML.");
   } else if (req.url == "/icon-sizerator.css") {
     res.writeHead(200, {
       'Content-Type': 'text/css'
     });
-    res.end(fs.readFileSync('/home/peacock/production/icon-sizerator/public/icon-sizerator.css'));
+    res.end(fs.readFileSync(installedPath + 'public/icon-sizerator.css'));
     log.debug("Sent CSS.");
   } else if (req.url == "/ei-image.svg") {
     res.writeHead(200, {
       'Content-Type': 'image/svg+xml'
     });
-    res.end(fs.readFileSync('/home/peacock/production/icon-sizerator/public/ei-image.svg'));
+    res.end(fs.readFileSync(installedPath + 'public/ei-image.svg'));
     log.debug("Sent SVG.");
   } else if (req.url == "/ei-image.png") {
     res.writeHead(200, {
       'Content-Type': 'image/png'
     });
-    res.end(fs.readFileSync('/home/peacock/production/icon-sizerator/public/ei-image.png'));
+    res.end(fs.readFileSync(installedPath + 'public/ei-image.png'));
     log.debug("Sent PNG.");
   }
 
