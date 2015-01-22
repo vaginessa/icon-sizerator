@@ -13,7 +13,7 @@ var log      = require('custom-logger').config({
 });
 
 // Set installedPath as appropriate
-var installedPath = "/home/peacock/production/icon-sizerator/";
+var installedPath = "/path/to/install";
 
 http.createServer(function(req, res) {
 
