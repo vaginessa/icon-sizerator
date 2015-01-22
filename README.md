@@ -29,9 +29,3 @@ node icon-sizerator.js
 ## Contributing
 
 Contributions of issues and pull requests are most welcome.
-
-## TODO
-
-1. Auto-clean stale uploads/* folders; currently this is performed by a cron job, but this should occur natively within icon-sizerator.js  Or #2...
-2. Alternatively a better solution would be to modify code to not need the on-disk folder, thus eliminating IO entirely.
-3. Pretty up the upload form buttons; standard ones are ugly
