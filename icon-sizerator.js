@@ -35,7 +35,7 @@ http.createServer(function(req, res) {
 
           temp_path = this.openedFiles[0].path;
           file_name = this.openedFiles[0].name;
-          new_location = 'uploads/' + randomString + '/';
+          new_location = '/home/peacock/production/icon-sizerator/uploads/' + randomString + '/';
 
           sourceImage = '';
           log.debug('Finished form open');
