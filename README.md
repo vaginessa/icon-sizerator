@@ -14,8 +14,8 @@ You upload a source icon PNG of at least 1024x1024, and we'll instantly deliver 
 
 If you wish to install this locally, you'll need to install ImageMagick through your preferred platform method.
 
-* On OS X `brew install imagemagick`
-* On Ubuntu: `sudo apt-get install imagemagick libmagick++-dev libmagickcore-dev`
+* OS X: `brew install imagemagick`
+* Ubuntu: `sudo apt-get install imagemagick libmagick++-dev libmagickcore-dev`
 
 Then you can simply:
 
