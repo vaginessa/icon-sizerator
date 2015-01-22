@@ -82,7 +82,7 @@ http.createServer(function(req, res) {
           "icon-76@3x.png" : 228
         };
 
-        var outDir = "uploads/" + randomString + "/";
+        var outDir = "/home/peacock/production/icon-sizerator/uploads/" + randomString + "/";
 
         var header = {
           "Content-Type": "application/x-zip",
@@ -130,25 +130,25 @@ http.createServer(function(req, res) {
     res.writeHead(200, {
       'Content-Type': 'text/html'
     });
-    res.end(fs.readFileSync('public/icon-sizerator.html'));
+    res.end(fs.readFileSync('/home/peacock/production/icon-sizerator/public/icon-sizerator.html'));
     log.debug("Sent HTML.");
   } else if (req.url == "/icon-sizerator.css") {
     res.writeHead(200, {
       'Content-Type': 'text/css'
     });
-    res.end(fs.readFileSync('public/icon-sizerator.css'));
+    res.end(fs.readFileSync('/home/peacock/production/icon-sizerator/public/icon-sizerator.css'));
     log.debug("Sent CSS.");
   } else if (req.url == "/ei-image.svg") {
     res.writeHead(200, {
       'Content-Type': 'image/svg+xml'
     });
-    res.end(fs.readFileSync('public/ei-image.svg'));
+    res.end(fs.readFileSync('/home/peacock/production/icon-sizerator/public/ei-image.svg'));
     log.debug("Sent SVG.");
   } else if (req.url == "/ei-image.png") {
     res.writeHead(200, {
       'Content-Type': 'image/png'
     });
-    res.end(fs.readFileSync('public/ei-image.png'));
+    res.end(fs.readFileSync('/home/peacock/production/icon-sizerator/public/ei-image.png'));
     log.debug("Sent PNG.");
   }
 
