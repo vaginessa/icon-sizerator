@@ -2,7 +2,7 @@ Clean this out regularly.
 
 Something like:
 
-`find "$FILEDIR" -type d -mtime +2 -delete` in cron will clean up nicely.
+find ! -name '.' -type d  -ctime +1 -exec rm -rf {} \;
 
 Please do your homework and work out what's appropriate for your specific
 system.
