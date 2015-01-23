@@ -2,7 +2,7 @@ Clean this out regularly.
 
 Something like:
 
-find ! -name '.' -type d  -ctime +1 -exec rm -rf {} \;
+find ! -name '.' -type d -ctime +1 -exec rm -rf {} \;
 
 Please do your homework and work out what's appropriate for your specific
 system.
