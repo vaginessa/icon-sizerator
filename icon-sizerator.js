@@ -92,7 +92,13 @@ http.createServer(function(req, res) {
           "icon-57@3x.png" : 171,
           "icon-60@3x.png" : 180,
           "icon-72@3x.png" : 216,
-          "icon-76@3x.png" : 228
+          "icon-76@3x.png" : 228,
+          "icon-ldpi.png" : 36,
+          "icon-mdpi.png" : 48,
+          "icon-hdpi.png" : 72,
+          "icon-xhdpi.png" : 96,
+          "icon-xxhdpi.png" : 144,
+          "icon-xxxhdpi.png" : 192
         };
 
         var outDir = installedPath + "uploads/" + randomString + "/";
