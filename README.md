@@ -1,6 +1,6 @@
-# Icon Sizerator - iOS App icon size generator
+# Icon Sizerator - iOS and Android App icon size generator
 
-This tool is a standalone service built in JavaScript on Node.js, which serves to assist iOS App creators in icon generation.
+This tool is a standalone service built in JavaScript on Node.js, which serves to assist iOS and Android App creators in icon generation.
 
 ![](https://github.com/davidjpeacock/icon-sizerator/blob/master/icon-sizerator-ss.png)
 
