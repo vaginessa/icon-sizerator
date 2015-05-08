@@ -4,4 +4,4 @@ notifications:
       - david@davidjpeacock.ca
     slack: coder-fellowship:MPMUVHv1UDwaE4CuGA271Gm4
 before_install:
-    - "sudo apt-get install imagemagick libmagick++-dev libmagickcore-dev"
+    - sudo apt-get install imagemagick libmagick++-dev libmagickcore-dev
