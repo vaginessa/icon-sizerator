@@ -2,7 +2,7 @@
 
 ## SECURITY
 
-Icon Sizerator relies on ImageMagick, which has a [![significant vulnerability]](https://imagetragick.com/) right now.  I highly recommend that you do not run this code on any publicly accessible server.
+Icon Sizerator relies on ImageMagick, which has a [significant vulnerability](https://imagetragick.com/) right now.  I highly recommend that you do not run this code on any publicly accessible server.
 
 [![Build Status](https://travis-ci.org/davidjpeacock/icon-sizerator.svg?branch=master)](https://travis-ci.org/davidjpeacock/icon-sizerator)
 
