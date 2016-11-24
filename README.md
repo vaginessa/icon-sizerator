@@ -1,9 +1,5 @@
 # Icon Sizerator - iOS and Android App icon size generator
 
-## SECURITY NOTICE - 2016/06/01 - PLEASE READ
-
-Icon Sizerator relies on ImageMagick, which has a [significant vulnerability](https://imagetragick.com/) right now.  I highly recommend that you do not run this code on any publicly accessible server.
-
 [![Build Status](https://travis-ci.org/davidjpeacock/icon-sizerator.svg?branch=master)](https://travis-ci.org/davidjpeacock/icon-sizerator)
 
 This tool is a standalone service built in JavaScript on Node.js, which serves to assist iOS and Android App creators in icon generation.
